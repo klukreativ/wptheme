@@ -20,7 +20,7 @@ while (have_posts()) {
         <?php
         $the_parent = wp_get_post_parent_id(get_the_ID()); // get_the_ID returns post ID, which is used to search for parent ID (if none, returns 0)
         // displays section and dynamically generates data if page has parent
-        if ($the_parent !== 0) {
+        if ($the_parent) {
         ?>
             <div class="metabox metabox--position-up metabox--with-home-link">
                 <p>
