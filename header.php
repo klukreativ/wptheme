@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes(); ?>>
 
 <head>
+    <!-- WP will automatically insert the charset used based on the site info -->
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_head(); ?>
 </head>
+<!-- will assign classes to body dynamically depending on what page it's being displayed-->
 
-<body>
+<body <?php body_class(); ?>>
     <header class="site-header">
         <div class="container">
             <h1 class="school-logo-text float-left">
-                <a href="<?php echo site_url();?>"><strong>Fictional</strong> University</a>
+                <a href="<?php echo site_url(); ?>"><strong>Fictional</strong> University</a>
             </h1>
             <span class="js-search-trigger site-header__search-trigger"><i class="fa fa-search" aria-hidden="true"></i></span>
             <i class="site-header__menu-trigger fa fa-bars" aria-hidden="true"></i>
             <div class="site-header__menu group">
                 <nav class="main-navigation">
+                    <!-- 
+                    // dynamically displays menu based off of the the menu created in dashboard
+                    wp_nav_menu(array( // takes ass arr
+                        'theme_location' => 'headerMenuLocation',
+                    ))
+                    -->
+
                     <ul>
-                        <!-- by using php & site_url we are setting the root --> 
-                        <li><a href="<?php echo site_url('/about-us') ?>">About Us</a></li>
+                        <!-- by using php & site_url we are setting the root -->
+                        <li <?php if (is_page('about-us') or wp_get_post_parent_id(0) == 16) echo 'class="current-menu-item"' ?> ><a href="<?php echo site_url('/about-us') ?>">About Us</a></li>
                         <li><a href="#">Programs</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Campuses</a></li>

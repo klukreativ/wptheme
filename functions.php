@@ -14,6 +14,9 @@ function university_files() {
 add_action('wp_enqueue_scripts', 'university_files');
 
 function university_features() {
+    register_nav_menu('headerMenuLocation', 'Header Menu Location'); // registers menu in WP menu page (called name in code, displayed name in UI)
+    register_nav_menu('footerLocationOne', 'Footer Menu Location One');
+    register_nav_menu('footerLocationTwo', 'Footer Menu Location Two');
     add_theme_support('title-tag');
 }
 // calls function after setting up theme
