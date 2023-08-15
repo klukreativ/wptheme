@@ -1,0 +1,42 @@
+<!-- WP will default to index.php unless given a specific template for pages like archive, author, etc. -->
+
+<?php
+get_header();
+?>
+<div class="page-banner">
+    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('/images/ocean.jpg'); ?>)"></div>
+    <div class="page-banner__content container container--narrow">
+        <h1 class="page-banner__title">
+            <?php the_archive_title(); ?> <!-- WP func that IDs archive type and value -->
+        </h1>
+        <div class="page-banner__intro">
+            <p><?php the_archive_description(); // uses description in author bio / category desc ?></p>
+        </div>
+    </div>
+</div>
+
+<div class="container container--narrow page-section">
+    <?php
+    while (have_posts()) {
+        the_post(); // gets data ready
+    ?>
+        <div class="post-item">
+            <h2 class="headline headline--medium headline--post-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+            <div class="metabox">
+                <p>Posted By: <?php the_author_posts_link(); ?> on <?php the_time('F mS, Y'); ?> in <?php echo get_the_category_list(', ') ?></p>
+            </div>
+        </div>
+
+        <div class="generic-content">
+            <?php the_excerpt(); // shows a small amt from the content 
+            ?>
+            <p><a class="btn btn--blue" href="<?php the_permalink(); ?>">Continue Reading &raquo;</a></p>
+        </div>
+    <?php }
+    echo paginate_links(); // pagination for links
+    ?>
+</div>
+
+<?php
+get_footer();
+?>
