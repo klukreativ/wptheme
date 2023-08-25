@@ -24,8 +24,9 @@ function university_features()
 // calls function after setting up theme
 add_action('after_setup_theme', 'university_features');
 
-// this function will filter out past events
+// this runs before any archive query to adjust it to our specifications
 function university_adjust_queries($query) {
+    // this function will filter out past events
     // is_admin checks to see if you're on the dashboard, this allows us to allow this to run only when viewed by the frontend
     // second argument checks for specific page (event archive)
     // 3rd argument checks to see if it's the default query (vs a custom query which we don't want)
