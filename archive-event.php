@@ -33,8 +33,11 @@ get_header();
     <?php }
     echo paginate_links(); // pagination for links
     ?>
+
+    <!-- site_url creates an absolute URL for the site, useful when working on both local and deploying to a live site as the root directory changes -->
+    <hr class="section-break">
+    <p>Looking for a recap of past events? <a href="<?php echo site_url('/past-events'); ?>">Click Here</a></p>
+
 </div>
 
-<?php
-get_footer();
-?>
+<?php get_footer(); ?>
