@@ -23,3 +23,20 @@ function university_features()
 }
 // calls function after setting up theme
 add_action('after_setup_theme', 'university_features');
+
+// this function will filter out past events
+function university_adjust_queries($query) {
+    // is_admin checks to see if you're on the dashboard, this allows us to allow this to run only when viewed by the frontend
+    // second argument checks for specific page (event archive)
+    // 3rd argument checks to see if it's the default query (vs a custom query which we don't want)
+    if (!is_admin() && is_post_type_archive('event') && $query->is_main_query()) {
+        $today = date('Ymd');
+        // powerful, will affect all queries everywhere on page incl editor
+        $query->set('meta_key', 'event_date'); // this selects the parameter we want to work with from the meta queries
+        $query->set('orderby', 'meta_value_num'); // orders it by date number
+        $query->set('order', 'ASC');
+        $query->set('meta_query', [['key' => 'event_date', 'compare' => '>=', 'value' => $today, 'type' => 'numeric']]);
+    }
+}
+
+add_action('pre_get_posts', 'university_adjust_queries'); // calls right before a get post request
