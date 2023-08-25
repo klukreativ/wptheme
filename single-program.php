@@ -25,11 +25,41 @@ while (have_posts()) {
             <?php the_content(); ?>
         </div>
         <?php
+        $relatedProfessors = new WP_Query([
+            'posts_per_page' => -1,
+            'post_type' => 'professor',
+            'orderby' => 'title',
+            'order' => 'ASC',
+            'meta_query' => [
+                [
+                    'key' => 'related_programs',
+                    'compare' => 'LIKE', // LIKE is the same as CONTAINS
+                    'value' => '"' . get_the_ID() . '"' // we need to wrap these in quotes because of the way that WP serializes the data when saving it
+                ],
+            ]
+        ]);
+
+        // only displays upcoming events if applicable
+        if ($relatedProfessors->have_posts()) {
+        ?>
+            <hr class="section-break">
+            <h2 class="headline headline--medium">Department of <?php echo get_the_title(); ?> Faculty</h2>
+            </br>
+            <?php
+            while ($relatedProfessors->have_posts()) {
+                $relatedProfessors->the_post();
+                $eventDate = new DateTime(get_field('event_date'));
+            ?>
+                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+            <?php }
+        }
+
+        wp_reset_postdata(); /* this resets the ID data because we are using a custom query, we change the ID. So we need to reset the data to reobtain the original page ID which we use in the next custom query */
+
         $today = date('Ymd');
         $homepageEvents = new WP_Query([
             'posts_per_page' => 2,
             'post_type' => 'event',
-            'orderby' => 'meta_value',
             'meta_key' => 'event_date',
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
@@ -39,13 +69,13 @@ while (have_posts()) {
                     'key' => 'related_programs',
                     'compare' => 'LIKE', // LIKE is the same as CONTAINS
                     'value' => '"' . get_the_ID() . '"' // we need to wrap these in quotes because of the way that WP serializes the data when saving it
-                ]
+                ],
             ]
         ]);
 
         // only displays upcoming events if applicable
         if ($homepageEvents->have_posts()) {
-        ?>
+            ?>
             <hr class="section-break">
             <h2 class="headline headline--medium">Upcoming <?php echo get_the_title(); ?> Events</h2>
             </br>
