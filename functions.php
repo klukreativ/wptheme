@@ -22,12 +22,17 @@ function university_features()
     // register_nav_menu('footerLocationTwo', 'Footer Menu Location Two');
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
+    /* this tells WP to create a copy of an uploaded image to match the following dimensions
+    [nickname, width, height, crop? (def to false, imp if forcing the img dimensions)] */
+    add_image_size('professorLandscape', 400, 260, true);
+    add_image_size('professorPortrait', 480, 650, true);
 }
 // calls function after setting up theme
 add_action('after_setup_theme', 'university_features');
 
 // this runs before any archive query to adjust it to our specifications
-function university_adjust_queries($query) {
+function university_adjust_queries($query)
+{
     // this function will filter out past events
     // is_admin checks to see if you're on the dashboard, this allows us to allow this to run only when viewed by the frontend
     // second argument checks for specific page (event archive)
