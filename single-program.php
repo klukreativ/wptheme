@@ -45,13 +45,21 @@ while (have_posts()) {
             <hr class="section-break">
             <h2 class="headline headline--medium">Department of <?php echo get_the_title(); ?> Faculty</h2>
             </br>
-            <?php
-            while ($relatedProfessors->have_posts()) {
-                $relatedProfessors->the_post();
-                $eventDate = new DateTime(get_field('event_date'));
-            ?>
-                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
-            <?php }
+            <ul class="professor-cards">
+                <?php
+                while ($relatedProfessors->have_posts()) {
+                    $relatedProfessors->the_post();
+                    $eventDate = new DateTime(get_field('event_date'));
+                ?>
+                    <li class="professor-card__list-item">
+                        <a class="professor-card" href="<?php the_permalink(); ?>">
+                            <img src="<?php the_post_thumbnail_url('professorLandscape'); ?>" alt="" class="professor-card__image">
+                            <span class="professor-card__name"><?php the_title(); ?></span>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?
         }
 
         wp_reset_postdata(); /* this resets the ID data because we are using a custom query, we change the ID. So we need to reset the data to reobtain the original page ID which we use in the next custom query */
@@ -75,7 +83,7 @@ while (have_posts()) {
 
         // only displays upcoming events if applicable
         if ($homepageEvents->have_posts()) {
-            ?>
+        ?>
             <hr class="section-break">
             <h2 class="headline headline--medium">Upcoming <?php echo get_the_title(); ?> Events</h2>
             </br>
